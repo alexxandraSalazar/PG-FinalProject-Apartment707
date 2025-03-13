@@ -5,7 +5,7 @@ This project is a graphical representation of Apartment 707 from the Nana anime/
 
 
 <p align="center">
-  <img src="./readme-badge.jpg" alt="Nana reame badge">
+  <img src="./readme-badge.svg" alt="Nana reame badge">
 </p>
 
 
