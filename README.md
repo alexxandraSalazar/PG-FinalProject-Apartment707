@@ -9,6 +9,8 @@ This project is a graphical representation of Apartment 707 from the Nana anime/
 </p>
 
 
+## License  
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)  
 
 ## Authors
 
