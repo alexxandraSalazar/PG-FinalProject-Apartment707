@@ -22,7 +22,7 @@ export default function Rooms() {
       },
       {
         name: "Hachi's Room",
-        file: "hachi.jpg",
+        file: "hachi.png",
         description: "Warm, dreamy and full of hope — just like Hachi herself.",
       },
       {
