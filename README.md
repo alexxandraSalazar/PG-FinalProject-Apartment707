@@ -1,16 +1,19 @@
+# Apartment 707: Visualizing Nana’s World 🍓🪷
 
-# PG-FinalProject-Apartment707
+This project is a graphical representation of Apartment 707 from the Nana anime/manga, primarily implemented using OpenGL and C++. The goal is to bring the iconic apartment to life by applying key graphical programming techniques, focusing on 3D rendering, lighting, and object manipulation. The project demonstrates the application of computer graphics concepts in creating a visually immersive environment inspired by the anime/manga universe.
 
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src="./readme-badge.svg" alt="Nana reame badge">
+</p>
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## License  
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)  
 
-## Expanding the ESLint configuration
+## Authors
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
+- [Salazar Alexandra](https://github.com/alexxandraSalazar)
+- [Reynosa Alexa](https://github.com/aaalexa)
+- [Martínez Didier](https://github.com/DYoussefMM)
+- [Alemán Kelvin](https://github.com/kianaleman)
