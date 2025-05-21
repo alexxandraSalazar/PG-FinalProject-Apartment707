@@ -13,8 +13,12 @@
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@tailwindcss/vite": "^4.1.7",
+    "lucide-react": "^0.511.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.0",
+    "tailwindcss": "^4.1.7",
     "three": "^0.175.0",
     "three-stdlib": "^2.35.15"
   },

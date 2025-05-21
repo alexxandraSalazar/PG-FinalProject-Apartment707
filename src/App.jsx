@@ -1,10 +1,15 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import FBXViewer from "./components/FBXViewer"
+import FirstPage from "./Pages/FirstPage"
 
 function App() {
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <FBXViewer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<FirstPage/>} />
+        <Route path="/play" element={<FBXViewer/>} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
