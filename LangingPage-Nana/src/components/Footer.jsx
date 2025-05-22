@@ -36,7 +36,7 @@ const Footer = () => {
           </a>
         </div>
         <p className="text-sm text-gray-600">
-          © 2025 AlexandraSalazar. Todos los derechos reservados.
+          © 2025 Alexandra, Alexa, Kelvin y Didier. Todos los derechos reservados.
         </p>
       </div>
       <div className="border-t border-gray-200 mx-4" />
