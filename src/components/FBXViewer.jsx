@@ -6,7 +6,7 @@ import CameraRig from "./CameraRig";
 
 
 function ModelGLB() {
-  const { scene } = useGLTF("/models/707.glb");
+  const { scene } = useGLTF("./S707.glb");
   const group = useRef();
 
   useEffect(() => {
