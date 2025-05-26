@@ -4,7 +4,7 @@ import { Box3, Vector3 } from "three";
 import { useGLTF, PointerLockControls } from "@react-three/drei";
 import CameraRig from "./CameraRig"; 
 
-
+// Rama Didier
 function ModelGLB() {
   const { scene } = useGLTF("/707.glb");
   const group = useRef();
