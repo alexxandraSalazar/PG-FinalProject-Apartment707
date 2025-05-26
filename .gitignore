@@ -1,3 +1,7 @@
 .vs/
+<<<<<<< HEAD
 node_modules
 *.glb
+=======
+node_modules
+>>>>>>> a3789bf45cd597bd5157478970de7350ac1cd9a9

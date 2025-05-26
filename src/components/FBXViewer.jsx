@@ -4,9 +4,15 @@ import { Box3, Vector3 } from "three";
 import { useGLTF, PointerLockControls } from "@react-three/drei";
 import CameraRig from "./CameraRig"; 
 
+<<<<<<< HEAD
 // Rama Didier 1
 function ModelGLB() {
   const { scene } = useGLTF("/707.glb");
+=======
+
+function ModelGLB() {
+  const { scene } = useGLTF("/models/707.glb");
+>>>>>>> a3789bf45cd597bd5157478970de7350ac1cd9a9
   const group = useRef();
 
   useEffect(() => {
