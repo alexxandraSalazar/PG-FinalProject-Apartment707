@@ -27,11 +27,7 @@ export default function Hero() {
             </div>
           </div>
           <div className="relative h-[400px] md:h-[500px]">
-            {/* <img
-              src="/tu-imagen-principal.jpg"
-              alt="Apartamento 707"
-              className="w-full h-full object-contain"
-            /> */}
+
           </div>
         </div>
       </section>
