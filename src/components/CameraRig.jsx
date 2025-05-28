@@ -25,7 +25,7 @@ export default function CameraRig() {
 
   // Inicia la posición de la cámara
   useEffect(() => {
-    camera.position.set(0, eyeHeight, 5); // alejamos un poco para ver el modelo
+    camera.position.set(0, eyeHeight, 18); // alejamos un poco para ver el modelo
     const handleKeyDown = (e) => {
       switch (e.code) {
         case 'KeyW': setMoveForward(true); break;
