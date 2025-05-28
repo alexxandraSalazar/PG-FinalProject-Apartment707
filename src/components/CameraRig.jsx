@@ -18,14 +18,14 @@ export default function CameraRig() {
    falta poder usarlo */
   const walkSpeed = 2.5;
   const runSpeed = 5.0;
-  const eyeHeight = 1.5;
+  const eyeHeight = 1.7;
   const headBobSpeed = 8;
   const headBobHeight = 0.05;
   const collisionDistance = 0.5;
 
   // Inicia la posición de la cámara
   useEffect(() => {
-    camera.position.set(0, eyeHeight, 18); // alejamos un poco para ver el modelo
+    camera.position.set(0, eyeHeight, 5); // alejamos un poco para ver el modelo
     const handleKeyDown = (e) => {
       switch (e.code) {
         case 'KeyW': setMoveForward(true); break;
