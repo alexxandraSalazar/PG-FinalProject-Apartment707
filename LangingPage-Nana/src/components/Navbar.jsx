@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu } from "lucide-react"
+import { Menu } from 'lucide-react'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -51,7 +51,7 @@ export default function Navbar() {
   // Add section visibility detection
   useEffect(() => {
     const handleSectionVisibility = () => {
-      const sections = ["home", "about", "Rooms", "howto"]
+      const sections = ["home", "about", "Rooms"]
       const scrollPosition = window.scrollY + 100 // Offset for better detection
 
       for (const section of sections) {
@@ -153,22 +153,6 @@ export default function Navbar() {
           >
             Rooms
           </a>
-          <a
-            href="#howto"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById("howto")?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-              setActiveSection("howto")
-            }}
-            className={`font-medium px-4 py-1 rounded-full transition-colors duration-300 ${
-              activeSection === "howto" ? "text-white bg-[#EB008A]" : "text-gray-700 hover:text-black"
-            }`}
-          >
-            How to play
-          </a>
         </div>
       </div>
 
@@ -243,23 +227,6 @@ export default function Navbar() {
               }`}
             >
               Rooms
-            </a>
-            <a
-              href="#howto"
-              onClick={(e) => {
-                e.preventDefault()
-                document.getElementById("howto")?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                })
-                setActiveSection("howto")
-                setIsMenuOpen(false)
-              }}
-              className={`font-medium px-4 py-2 rounded-full text-center transition-colors duration-300 ${
-                activeSection === "howto" ? "text-white bg-[#EB008A]" : "text-gray-700 hover:text-black"
-              }`}
-            >
-              How to play
             </a>
             <button
               onClick={toggleMusic}
