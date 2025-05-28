@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useState, useRef, useEffect } from "react"
+import { memo, useState, useRef, useEffect, useCallback } from "react"
 import { X, Volume2, VolumeX } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
@@ -9,38 +9,118 @@ const FirstPage = memo(() => {
   const [isAudioModalOpen, setIsAudioModalOpen] = useState(false)
   const [volume, setVolume] = useState(0.5)
   const [isMuted, setIsMuted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [needsUserInteraction, setNeedsUserInteraction] = useState(false)
   const audioRef = useRef(null)
   const navigate = useNavigate()
 
+  // Función para intentar reproducir la música
+  const tryPlayMusic = useCallback(async () => {
+    if (audioRef.current && !isMuted) {
+      try {
+        await audioRef.current.play()
+        setIsPlaying(true)
+        setNeedsUserInteraction(false)
+      } catch (error) {
+        console.log("Autoplay prevented. User interaction required.")
+        setNeedsUserInteraction(true)
+        setIsPlaying(false)
+      }
+    }
+  }, [isMuted])
+
+  // Función para manejar el primer clic del usuario
+  const handleFirstUserInteraction = useCallback(async () => {
+    if (needsUserInteraction && audioRef.current && !isMuted) {
+      await tryPlayMusic()
+      // Remover el listener después del primer clic exitoso
+      document.removeEventListener("click", handleFirstUserInteraction)
+      document.removeEventListener("keydown", handleFirstUserInteraction)
+    }
+  }, [needsUserInteraction, isMuted, tryPlayMusic])
+
+  // Inicializar el audio
   useEffect(() => {
     audioRef.current = new Audio("/bg-music.mp3")
     audioRef.current.loop = true
     audioRef.current.volume = volume
 
-    const playPromise = audioRef.current.play()
-
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        console.log("Autoplay prevented. User interaction required to play audio.")
-      })
-    }
+    // Intentar reproducir inmediatamente
+    tryPlayMusic()
 
     return () => {
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current = null
       }
+      // Limpiar listeners
+      document.removeEventListener("click", handleFirstUserInteraction)
+      document.removeEventListener("keydown", handleFirstUserInteraction)
     }
   }, [])
 
+  // Agregar listeners para el primer clic del usuario si es necesario
+  useEffect(() => {
+    if (needsUserInteraction) {
+      document.addEventListener("click", handleFirstUserInteraction)
+      document.addEventListener("keydown", handleFirstUserInteraction)
+    }
+
+    return () => {
+      document.removeEventListener("click", handleFirstUserInteraction)
+      document.removeEventListener("keydown", handleFirstUserInteraction)
+    }
+  }, [needsUserInteraction, handleFirstUserInteraction])
+
+  // Manejar cambios de volumen y mute
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume
+      if (isMuted) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        audioRef.current.volume = volume
+        // Si no está muteado, intentar reproducir
+        if (!isPlaying) {
+          tryPlayMusic()
+        }
+      }
     }
-  }, [volume, isMuted])
+  }, [volume, isMuted, isPlaying, tryPlayMusic])
+
+  // Manejar cuando el audio se pausa inesperadamente
+  useEffect(() => {
+    const handleAudioPause = () => {
+      if (!isMuted) {
+        // Si no está muteado pero se pausó, intentar reproducir de nuevo
+        setTimeout(() => {
+          tryPlayMusic()
+        }, 100)
+      }
+    }
+
+    const handleAudioEnded = () => {
+      if (!isMuted) {
+        // Si terminó pero no está muteado, reproducir de nuevo (aunque loop debería manejarlo)
+        tryPlayMusic()
+      }
+    }
+
+    if (audioRef.current) {
+      audioRef.current.addEventListener("pause", handleAudioPause)
+      audioRef.current.addEventListener("ended", handleAudioEnded)
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener("pause", handleAudioPause)
+        audioRef.current.removeEventListener("ended", handleAudioEnded)
+      }
+    }
+  }, [isMuted, tryPlayMusic])
 
   const handleVolumeChange = (e) => {
-    const newVolume = parseFloat(e.target.value)
+    const newVolume = Number.parseFloat(e.target.value)
     setVolume(newVolume)
     if (isMuted && newVolume > 0) {
       setIsMuted(false)
@@ -53,6 +133,13 @@ const FirstPage = memo(() => {
 
   return (
     <section id="home" className="relative px-4 md:px-8 py-16 md:py-24 overflow-hidden bg-black text-white">
+      {/* Indicador de que se necesita interacción del usuario */}
+      {needsUserInteraction && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-[#EB008A] text-white px-4 py-2 rounded-lg shadow-lg">
+          Click anywhere to start music
+        </div>
+      )}
+
       <div className="absolute inset-0 z-0 opacity-40">
         <img src="/bg.jpeg" alt="Apartamento 707 background" className="w-full h-full object-cover" />
       </div>
@@ -86,6 +173,7 @@ const FirstPage = memo(() => {
       >
         {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
         <span>Music</span>
+        {isPlaying && !isMuted && <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>}
       </button>
 
       <a
@@ -109,7 +197,8 @@ const FirstPage = memo(() => {
             <h2 className="text-2xl font-bold text-[#ffffff] mb-4">How to Play</h2>
             <div className="space-y-4 text-gray-200">
               <p>
-                Use the <strong>W</strong>, <strong>A</strong>, <strong>S</strong>, and <strong>D</strong> keys to move around.
+                Use the <strong>W</strong>, <strong>A</strong>, <strong>S</strong>, and <strong>D</strong> keys to move
+                around.
               </p>
               <p>
                 Use your <strong>mouse</strong> or <strong>touchpad</strong> to look around and explore the apartment.
@@ -136,6 +225,20 @@ const FirstPage = memo(() => {
                   {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
                 </button>
                 <span className="text-white">{isMuted ? "Unmute" : "Mute"}</span>
+                {isPlaying && !isMuted && (
+                  <div className="flex items-center gap-1">
+                    <div className="w-1 h-3 bg-green-400 rounded animate-pulse"></div>
+                    <div
+                      className="w-1 h-4 bg-green-400 rounded animate-pulse"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-1 h-2 bg-green-400 rounded animate-pulse"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                    <span className="text-green-400 text-sm ml-2">Playing</span>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -153,6 +256,14 @@ const FirstPage = memo(() => {
                   className="w-full accent-[#EB008A]"
                 />
               </div>
+
+              {needsUserInteraction && (
+                <div className="bg-yellow-900/50 border border-yellow-600 rounded-lg p-3">
+                  <p className="text-yellow-200 text-sm">
+                    Click anywhere on the page to start the music. Browsers require user interaction to play audio.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
