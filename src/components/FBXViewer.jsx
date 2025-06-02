@@ -2,11 +2,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Box3, Vector3 } from "three";
 import { useGLTF, PointerLockControls } from "@react-three/drei";
-import CameraRig from "./CameraRig"; 
-
+import CameraRig from "./CameraRig";
+import AnimatedGroup from "./Animations"; // Tu componente con animación por proximidad
 
 function ModelGLB() {
-  const { scene } = useGLTF("/models/707.glb");
+  const { scene } = useGLTF("/models/S707.glb");
   const group = useRef();
 
   useEffect(() => {
@@ -29,18 +29,24 @@ function ModelGLB() {
 
 function PlayerControls({ onEnter }) {
   const controls = useRef();
-  const velocity = useRef(new Vector3());
   const direction = new Vector3();
   const move = useRef({ forward: false, backward: false, left: false, right: false });
   const [enabled, setEnabled] = useState(false);
+
+  // Áreas de colisión
+  const walls = [
+    new Box3(new Vector3(-5, 0, -5), new Vector3(5, 5, -4.5)),
+    new Box3(new Vector3(-5, 0, 4.5), new Vector3(5, 5, 5)),
+    new Box3(new Vector3(-5, 0, -5), new Vector3(-4.5, 5, 5)),
+    new Box3(new Vector3(4.5, 0, -5), new Vector3(5, 5, 5)),
+  ];
 
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.code === "KeyW" && !enabled) {
         setEnabled(true);
-        onEnter(); // Notificar al componente padre que ya entró
+        onEnter();
       }
-
       switch (e.code) {
         case "KeyW": move.current.forward = true; break;
         case "KeyS": move.current.backward = true; break;
@@ -60,7 +66,6 @@ function PlayerControls({ onEnter }) {
 
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("keyup", onKeyUp);
-
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("keyup", onKeyUp);
@@ -68,25 +73,31 @@ function PlayerControls({ onEnter }) {
   }, [enabled, onEnter]);
 
   useFrame((state, delta) => {
-    if (!enabled) return;
+    if (!enabled || !controls.current) return;
 
     const speed = 5;
     direction.set(0, 0, 0);
-
     if (move.current.forward) direction.z -= 1;
     if (move.current.backward) direction.z += 1;
     if (move.current.left) direction.x -= 1;
     if (move.current.right) direction.x += 1;
 
     direction.normalize().multiplyScalar(speed * delta);
-    controls.current.getObject().position.add(direction);
+
+    const tempPosition = controls.current.getObject().position.clone().add(direction);
+    const playerBox = new Box3().setFromCenterAndSize(tempPosition, new Vector3(0.5, 1.6, 0.5));
+
+    const hasCollision = walls.some((wall) => wall.intersectsBox(playerBox));
+    if (!hasCollision) {
+      controls.current.getObject().position.copy(tempPosition);
+    }
   });
 
   return <PointerLockControls ref={controls} />;
 }
 
 export default function GLBViewer() {
-  const [startCameraPosition] = useState([0, 1, 10]); // frente a la puerta
+  const [startCameraPosition] = useState([0, 1, 10]);
   const [entered, setEntered] = useState(false);
 
   const handleEnter = () => {
@@ -99,10 +110,18 @@ export default function GLBViewer() {
       <directionalLight position={[5, 13, 5]} intensity={1} />
       <Suspense fallback={null}>
         <ModelGLB />
-        <PointerLockControls />
+
+        {/* 🎯 Ejemplo de objeto animado dentro del apartamento */}
+        <AnimatedGroup distance={2}>
+          <mesh position={[0, 1.5, 0]}>
+            <sphereGeometry args={[0.3, 32, 32]} />
+            <meshStandardMaterial color={"orange"} />
+          </mesh>
+        </AnimatedGroup>
+
+        <PlayerControls onEnter={handleEnter} />
         <CameraRig />
       </Suspense>
     </Canvas>
   );
-
 }
