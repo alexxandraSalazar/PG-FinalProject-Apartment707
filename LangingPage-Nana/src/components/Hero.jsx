@@ -18,9 +18,11 @@ export default function Hero() {
               and the music are intertwined.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="px-4 py-2 text-base font-semibold rounded-full bg-[#EB008A] hover:bg-[#EB008A] transition">
-                Start Tour
-              </button>
+<a href="https://apartment707.vercel.app/" target="_blank" rel="noopener noreferrer">
+  <button className="px-4 py-2 text-base font-semibold rounded-full bg-[#EB008A] hover:bg-[#EB008A] transition">
+    Start Tour
+  </button>
+</a>
               <button className="px-4 py-2 text-base font-semibold rounded-full border border-white text-white hover:bg-white/10 transition">
                 Watch video
               </button>
