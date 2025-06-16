@@ -76,7 +76,7 @@ To run the project on a local development server, follow these steps. You must h
    
    Open your terminal or command prompt and run:
    ```bash
-https://github.com/alexxandraSalazar/PG-FinalProject-Apartment707.git
+    https://github.com/alexxandraSalazar/PG-FinalProject-Apartment707.git
    ```
 2.**Install the dependencies**
 
