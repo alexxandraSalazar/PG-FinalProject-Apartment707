@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function CallAction() {
+  const navigate = useNavigate();
+
   return (
     <section className="py-6 md:py-8 bg-[#EB008A] text-white text-center rounded-lg px-4">
       <div className="container mx-auto px-2">
@@ -9,10 +13,16 @@ export default function CallAction() {
           Immerse yourself in the home where one of anime's most iconic friendships was forged.
         </p>
         <div className="flex flex-col sm:flex-row gap-2 justify-center">
-          <button className="px-3 py-1.5 text-sm font-medium rounded-full bg-white text-[#EB008A] hover:bg-gray-100 transition">
+          <button
+            onClick={() => navigate('/first')}
+            className="px-3 py-1.5 text-sm font-medium rounded-full bg-white text-[#EB008A] hover:bg-gray-100 transition"
+          >
             Start Tour
           </button>
-          <button className="px-3 py-1.5 text-sm font-medium rounded-full border border-white text-white hover:bg-[#EB008A] transition">
+          <button
+            onClick={() => window.open('https://www.youtube.com/watch?v=p6ZwTKTyYSg', '_blank')}
+            className="px-3 py-1.5 text-sm font-medium rounded-full border border-white text-white hover:bg-[#EB008A] transition"
+          >
             Watch Demo
           </button>
         </div>
