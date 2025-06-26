@@ -64,7 +64,7 @@ const FirstPage = memo(() => {
 
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => navigate('/play')}
+              onClick={() => navigate("/play")}
               className="px-8 py-2 text-base font-semibold rounded-full bg-[#EB008A] hover:bg-[#EB008A]/90 transition w-40"
             >
               Play
@@ -89,7 +89,7 @@ const FirstPage = memo(() => {
       </button>
 
       <a
-        href="/"
+        href="https://pg-final-project-apartment707.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 px-4 py-2 rounded-full bg-[#EB008A] hover:bg-[#EB008A]/90 transition flex items-center gap-2 shadow-lg"
